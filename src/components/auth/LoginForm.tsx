@@ -102,7 +102,7 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <Button className="w-full rounded-md" type="submit">
           {isPending ? (
             <React.Fragment>
               <span className="flex items-center gap-x-2">

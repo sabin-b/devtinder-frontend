@@ -23,7 +23,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { addUser } = userSlice.actions;
+export const { addUser, removeUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;
 
 const userState = (state: RootState) => state.user;

@@ -120,7 +120,7 @@ export default function SignupForm() {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <Button className="w-full rounded-md" type="submit">
           Create An Account
         </Button>
         <div className="text-center flex flex-row gap-x-1.5 justify-center text-sm">

@@ -8,6 +8,7 @@ import RedirectAuthUser from "./middleware/RedirectAuthUser";
 const Home = lazy(() => import("@/pages/home"));
 const Login = lazy(() => import("@/pages/login"));
 const SignUp = lazy(() => import("./pages/signup"));
+const Profile = lazy(() => import("./pages/profile"));
 function App() {
   //? create routes
   const router = createBrowserRouter([
@@ -21,7 +22,7 @@ function App() {
         },
         {
           path: "/profile",
-          element: <div>profile page</div>,
+          element: <Profile />,
         },
       ],
     },
@@ -49,4 +50,4 @@ function App() {
 
 export default App;
 
-// 38.45
+// 1:02

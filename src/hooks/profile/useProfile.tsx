@@ -12,7 +12,7 @@ export default function useProfile() {
   const currentUser = useSelector(getLoggedInUser);
 
   const {
-    data: activeUser,
+    data: userData,
     isLoading,
     failureReason,
     isError,
@@ -34,5 +34,5 @@ export default function useProfile() {
     enabled: Boolean(!currentUser),
   });
 
-  return { activeUser, isError, isLoading, failureReason };
+  return { userData, isError, isLoading, failureReason };
 }
