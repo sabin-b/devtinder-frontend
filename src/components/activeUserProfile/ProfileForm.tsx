@@ -1,4 +1,9 @@
+import { getLoggedInUser } from "@/features/user/user.slice";
+import { UserProfileSchema } from "@/schema/activeUserProfile/profile.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { z } from "zod";
 import { Button } from "../ui/button";
 import {
   Form,
@@ -9,18 +14,35 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
 export default function ProfileForm() {
-  const form = useForm({
+  const loggedUser = useSelector(getLoggedInUser);
+
+  const form = useForm<z.infer<typeof UserProfileSchema>>({
+    resolver: zodResolver(UserProfileSchema),
     defaultValues: {
-      firstName: "",
+      firstName: loggedUser?.firstName,
+      lastName: loggedUser?.lastName,
+      age: loggedUser?.age,
+      about: loggedUser?.about,
+      gender: loggedUser?.gender,
+      imageUrl: loggedUser?.imageUrl,
     },
   });
   const { control, handleSubmit } = form;
 
   //* handle form submission
-  function handleFormSubmission() {}
+  function handleFormSubmission(inputs: z.infer<typeof UserProfileSchema>) {
+    console.log(inputs);
+  }
 
   return (
     <Form {...form}>
@@ -45,7 +67,7 @@ export default function ProfileForm() {
             <FormItem>
               <FormLabel>lastName</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="doe,b,paul" {...field} />
+                <Input type="text" placeholder="doe" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -58,7 +80,12 @@ export default function ProfileForm() {
             <FormItem>
               <FormLabel>age</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="ex:18,19" {...field} />
+                <Input
+                  type="number"
+                  min={18}
+                  placeholder="ex:18,19"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -70,9 +97,20 @@ export default function ProfileForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>gender</FormLabel>
-              <FormControl>
-                <Input type="text" placeholder="ex:18,19" {...field} />
-              </FormControl>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select the gender" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent className="bg-slate-700">
+                  <SelectItem className="" value="male">
+                    Male
+                  </SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
@@ -84,7 +122,11 @@ export default function ProfileForm() {
             <FormItem>
               <FormLabel>image</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="imageurl.com" {...field} />
+                <Input
+                  type="file"
+                  placeholder="imageurl.com"
+                  onChange={(e) => field.onChange(e.target.files?.[0])}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
