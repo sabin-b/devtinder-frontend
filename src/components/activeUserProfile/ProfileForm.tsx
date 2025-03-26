@@ -1,6 +1,7 @@
 import { getLoggedInUser } from "@/features/user/user.slice";
 import { UserProfileSchema } from "@/schema/activeUserProfile/profile.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { z } from "zod";
@@ -23,7 +24,16 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
-export default function ProfileForm() {
+interface IProfileFormProps {
+  handleProfileCardPreview: (
+    formInputs: z.infer<typeof UserProfileSchema>
+  ) => void;
+}
+
+export default function ProfileForm({
+  handleProfileCardPreview,
+}: IProfileFormProps) {
+  // * loggedInUser  from redux store
   const loggedUser = useSelector(getLoggedInUser);
 
   const form = useForm<z.infer<typeof UserProfileSchema>>({
@@ -37,7 +47,18 @@ export default function ProfileForm() {
       imageUrl: loggedUser?.imageUrl,
     },
   });
-  const { control, handleSubmit } = form;
+  const { control, handleSubmit, watch } = form;
+
+  const formValues = watch();
+
+  //? update userPreview card
+  useEffect(() => {
+    const timoutId = setTimeout(
+      () => handleProfileCardPreview(formValues),
+      300
+    );
+    return () => clearTimeout(timoutId);
+  }, [formValues, handleProfileCardPreview]);
 
   //* handle form submission
   function handleFormSubmission(inputs: z.infer<typeof UserProfileSchema>) {

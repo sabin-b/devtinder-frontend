@@ -26,9 +26,6 @@ export const UserProfileSchema = z.object({
   lastName: z
     .string()
     .optional()
-    .refine((val) => !val || val.length > 0, {
-      message: "Last name must be at least 1 character long",
-    })
     .transform((input) =>
       input ? xss(domPurify.sanitize(input)).trim() : undefined
     ),
@@ -56,14 +53,21 @@ export const UserProfileSchema = z.object({
   imageUrl: z
     .union([
       z
-        .instanceof(File)
+        .custom<File>((file) => file instanceof File, {
+          message: "Invalid file format",
+        })
         .refine((file) => file.size < 2 * 1024 * 1024, {
           message: "File size should be less than 2MB",
         })
         .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
           message: "Only .jpg, .jpeg, .png, and .webp files are accepted.",
         }),
-      z.string().url({ message: "Invalid image URL" }),
+      z
+        .string()
+        .url({ message: "Invalid image URL" })
+        .transform((input) =>
+          input?.trim() ? xss(domPurify.sanitize(input)).trim() : undefined
+        ),
     ])
     .optional()
     .transform((input) => (input ? input : undefined)),

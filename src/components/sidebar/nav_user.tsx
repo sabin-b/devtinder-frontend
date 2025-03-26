@@ -18,12 +18,13 @@ import { getLoggedInUser } from "@/features/user/user.slice";
 import useLogout from "@/hooks/auth/useLogout";
 import { ChevronsUpDown, LogOut, User } from "lucide-react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
   const user = useSelector(getLoggedInUser);
   const { logOut } = useLogout();
+  const navigate = useNavigate();
 
   return (
     <SidebarMenu>
@@ -73,14 +74,12 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Link
-                  className="flex cursor-pointer items-center w-full gap-x-2"
-                  to={"/profile"}
-                >
-                  <User />
-                  Profile
-                </Link>
+              <DropdownMenuItem
+                onClick={() => navigate("/profile")}
+                className="cursor-pointer"
+              >
+                <User />
+                Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
