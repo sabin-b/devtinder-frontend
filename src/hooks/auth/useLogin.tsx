@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { tanstackKeys } from "../tanstack.keys";
 
-interface IuseLoginReturnType {
+interface IUserLoginReturnType {
   message: string;
   data: IUser;
 }
@@ -21,7 +21,7 @@ export default function useLogin() {
     mutationKey: [tanstackKeys.login],
     mutationFn: async (data: z.infer<typeof LoginSchema>) => {
       try {
-        const response = await axiosInstance.post<IuseLoginReturnType>(
+        const response = await axiosInstance.post<IUserLoginReturnType>(
           "/auth/signin",
           data
         );

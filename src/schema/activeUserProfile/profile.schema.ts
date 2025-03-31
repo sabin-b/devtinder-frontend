@@ -50,7 +50,7 @@ export const UserProfileSchema = z.object({
       input?.trim() ? xss(domPurify.sanitize(input)).trim() : undefined
     ),
 
-  imageUrl: z
+  image: z
     .union([
       z
         .custom<File>((file) => file instanceof File, {

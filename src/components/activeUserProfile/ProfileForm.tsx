@@ -1,5 +1,7 @@
 import { getLoggedInUser } from "@/features/user/user.slice";
+import { makeFileToFilePathUrl } from "@/lib/utils";
 import { UserProfileSchema } from "@/schema/activeUserProfile/profile.schema";
+import { ProfileCardPreview } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -25,27 +27,27 @@ import {
 import { Textarea } from "../ui/textarea";
 
 interface IProfileFormProps {
-  handleProfileCardPreview: (
-    formInputs: z.infer<typeof UserProfileSchema>
-  ) => void;
+  handleProfileCardPreview: (formInputs: ProfileCardPreview) => void;
 }
 
 export default function ProfileForm({
   handleProfileCardPreview,
 }: IProfileFormProps) {
-  // * loggedInUser  from redux store
+  // * loggedInUser details from redux store
   const loggedUser = useSelector(getLoggedInUser);
+
+  const userObject = {
+    firstName: loggedUser?.firstName,
+    lastName: loggedUser?.lastName,
+    age: loggedUser?.age,
+    about: loggedUser?.about,
+    gender: loggedUser?.gender,
+    image: loggedUser?.imageUrl,
+  };
 
   const form = useForm<z.infer<typeof UserProfileSchema>>({
     resolver: zodResolver(UserProfileSchema),
-    defaultValues: {
-      firstName: loggedUser?.firstName,
-      lastName: loggedUser?.lastName,
-      age: loggedUser?.age,
-      about: loggedUser?.about,
-      gender: loggedUser?.gender,
-      imageUrl: loggedUser?.imageUrl,
-    },
+    defaultValues: userObject,
   });
   const { control, handleSubmit, watch } = form;
 
@@ -53,16 +55,38 @@ export default function ProfileForm({
 
   //? update userPreview card
   useEffect(() => {
-    const timoutId = setTimeout(
-      () => handleProfileCardPreview(formValues),
-      300
-    );
-    return () => clearTimeout(timoutId);
+    const timeoutId = setTimeout(() => {
+      (async () => {
+        const profileImage = formValues.image;
+        let currentImage: string | undefined;
+        if (profileImage instanceof File) {
+          currentImage = (await makeFileToFilePathUrl(profileImage)) as string;
+        } else if (typeof profileImage === "string") {
+          currentImage = profileImage;
+        }
+        handleProfileCardPreview({ currentImage, ...formValues });
+      })();
+    }, 300);
+    return () => clearTimeout(timeoutId);
   }, [formValues, handleProfileCardPreview]);
 
   //* handle form submission
   function handleFormSubmission(inputs: z.infer<typeof UserProfileSchema>) {
-    console.log(inputs);
+    //? submission with same value just return
+    const isSameValues = JSON.stringify(inputs) === JSON.stringify(userObject);
+    if (isSameValues) return;
+
+    //? make a request
+    const formData = new FormData();
+    // ? removing undefined values
+    Object.entries(inputs)
+      .filter(([, value]) => value !== undefined)
+      .forEach(([key, value]) =>
+        key === "age"
+          ? formData.append(key, value.toString())
+          : formData.append(key, value as string | File)
+      );
+    console.log(Object.fromEntries(formData));
   }
 
   return (
@@ -75,7 +99,7 @@ export default function ProfileForm({
             <FormItem>
               <FormLabel>firstName</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="johndoe" {...field} />
+                <Input type="text" placeholder="john doe" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -138,14 +162,14 @@ export default function ProfileForm({
         />
         <FormField
           control={control}
-          name="imageUrl"
+          name="image"
           render={({ field }) => (
             <FormItem>
               <FormLabel>image</FormLabel>
               <FormControl>
                 <Input
                   type="file"
-                  placeholder="imageurl.com"
+                  placeholder="choose the profile image"
                   onChange={(e) => field.onChange(e.target.files?.[0])}
                 />
               </FormControl>
@@ -172,7 +196,7 @@ export default function ProfileForm({
         />
         <Button
           type="submit"
-          className="w-full cursor-pointer bg-green-500 text-white/90 hover:bg-green-600"
+          className="w-full cursor-pointer bg-green-600 text-white/90 hover:bg-green-700"
         >
           Save Changes
         </Button>

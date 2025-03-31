@@ -1,3 +1,6 @@
+import { UserProfileSchema } from "@/schema/activeUserProfile/profile.schema";
+import { z } from "zod";
+
 export enum Gender {
   "Male" = "male",
   "FeMale" = "female",
@@ -15,3 +18,8 @@ export interface IUser {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export type ProfileCardPreview = Omit<
+  z.infer<typeof UserProfileSchema>,
+  "imageUrl"
+> & { currentImage?: string };
