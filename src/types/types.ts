@@ -8,10 +8,10 @@ export enum Gender {
 }
 
 export interface IUser {
+  _id: string;
   firstName: string;
   lastName?: string;
-  emailId: string;
-  imageUrl?: string;
+  image?: string;
   age?: number;
   gender?: Gender;
   about?: string;

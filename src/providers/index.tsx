@@ -10,7 +10,7 @@ export default function AppProviders({ children }: PropsWithChildren) {
       <ReduxProvider>
         <TanstackProvider>
           {children}
-          <Toaster />
+          <Toaster richColors position="top-center" closeButton />
         </TanstackProvider>
       </ReduxProvider>
     </React.Fragment>

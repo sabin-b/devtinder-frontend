@@ -33,6 +33,7 @@ export const UserProfileSchema = z.object({
   age: z.coerce
     .number()
     .min(18, { message: "Age must be at least 18" })
+    .max(55, { message: "age must be less than 56" })
     .optional(),
 
   gender: z

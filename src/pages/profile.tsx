@@ -7,16 +7,11 @@ export default function Profile() {
   const [profileCardPreview, setProfileCardPreview] =
     useState<ProfileCardPreview | null>(null);
 
-  console.log(profileCardPreview);
-
   const handleProfileCardPreview = useCallback(
     (formInputs: ProfileCardPreview) => {
-      setProfileCardPreview((prev) => {
-        if (JSON.stringify(prev) !== JSON.stringify(formInputs)) {
-          return formInputs;
-        }
-        return prev;
-      });
+      setProfileCardPreview((prev) =>
+        JSON.stringify(prev) !== JSON.stringify(formInputs) ? formInputs : prev
+      );
     },
     []
   );

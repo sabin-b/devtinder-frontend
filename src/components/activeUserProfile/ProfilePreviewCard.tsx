@@ -24,7 +24,7 @@ export default function ProfilePreviewCard({
   const profileImage =
     gender === undefined
       ? defaultImage
-      : gender === "male"
+      : gender === "male" || gender === "other"
       ? malePlaceHolder
       : femalePlaceHolder;
 
@@ -32,7 +32,7 @@ export default function ProfilePreviewCard({
     <Card className="bg-slate-700 min-w-auto w-full xl:min-w-sm max-w-sm mx-auto rounded-md">
       <CardHeader className="max-h-[350px] min-h-[250px] md:min-h-[300px] lg:min-h-[300px]  h-full w-full flex">
         <img
-          className="object-cover object-center rounded-md w-full h-full"
+          className="object-cover select-none [user-drag:none] [-webkit-user-drag:none] object-center rounded-md w-full h-full"
           src={currentImage || profileImage}
         />
       </CardHeader>

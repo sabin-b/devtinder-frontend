@@ -1,11 +1,14 @@
 import { getLoggedInUser } from "@/features/user/user.slice";
-import { makeFileToFilePathUrl } from "@/lib/utils";
+import useUpdateProfile from "@/hooks/profile/useUpdateProfile";
+import { cn, makeFileToFilePathUrl } from "@/lib/utils";
 import { UserProfileSchema } from "@/schema/activeUserProfile/profile.schema";
 import { ProfileCardPreview } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import {
@@ -42,7 +45,7 @@ export default function ProfileForm({
     age: loggedUser?.age,
     about: loggedUser?.about,
     gender: loggedUser?.gender,
-    image: loggedUser?.imageUrl,
+    image: loggedUser?.image,
   };
 
   const form = useForm<z.infer<typeof UserProfileSchema>>({
@@ -52,6 +55,10 @@ export default function ProfileForm({
   const { control, handleSubmit, watch } = form;
 
   const formValues = watch();
+
+  // ? update query
+  const { updateProfile, isLoading, isError, failureReason } =
+    useUpdateProfile();
 
   //? update userPreview card
   useEffect(() => {
@@ -73,7 +80,14 @@ export default function ProfileForm({
   //* handle form submission
   function handleFormSubmission(inputs: z.infer<typeof UserProfileSchema>) {
     //? submission with same value just return
-    const isSameValues = JSON.stringify(inputs) === JSON.stringify(userObject);
+    const isSameValues =
+      inputs.firstName === userObject.firstName &&
+      inputs.lastName === userObject.lastName &&
+      inputs.age === userObject.age &&
+      inputs.gender === userObject.gender &&
+      inputs.image === userObject.image &&
+      inputs.about === userObject.about;
+
     if (isSameValues) return;
 
     //? make a request
@@ -86,7 +100,16 @@ export default function ProfileForm({
           ? formData.append(key, value.toString())
           : formData.append(key, value as string | File)
       );
-    console.log(Object.fromEntries(formData));
+
+    //? make update
+    updateProfile(formData, {
+      onSuccess: (data: { message: string }) => {
+        toast.success(data.message || "profile updated");
+      },
+      onError: () => {
+        toast.error(failureReason?.message || "profile updating failed");
+      },
+    });
   }
 
   return (
@@ -196,9 +219,21 @@ export default function ProfileForm({
         />
         <Button
           type="submit"
-          className="w-full cursor-pointer bg-green-600 text-white/90 hover:bg-green-700"
+          className={cn(
+            "w-full cursor-pointer bg-green-600 text-white/90 hover:bg-green-700",
+            {
+              "bg-red-500": isError,
+            }
+          )}
         >
-          Save Changes
+          {isLoading && (
+            <span className="inline-flex gap-x-2">
+              <Loader className="size-5 animate-spin" />
+              Please Wait...
+            </span>
+          )}
+          {!isError && !isLoading && <span>Save Changes</span>}
+          {!isLoading && isError && <span>Updation Failed</span>}
         </Button>
       </form>
     </Form>
