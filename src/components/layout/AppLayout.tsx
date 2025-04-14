@@ -1,6 +1,6 @@
 import AuthenticationCheck from "@/middleware/AuthenticationCheck";
 import { Separator } from "@radix-ui/react-separator";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { AppSidebar } from "../sidebar/AppSidebar";
 import {
   Breadcrumb,
@@ -13,11 +13,15 @@ import {
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 
 export default function AppLayout() {
+  const { pathname } = useLocation();
+
+  console.log();
+
   return (
     <AuthenticationCheck>
       <SidebarProvider>
         <AppSidebar />
-        <SidebarInset className="bg-slate-900 p-4 pt-2">
+        <SidebarInset className="bg-slate-900 p-4 pt-0">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 ">
               <SidebarTrigger className="-ml-1 hover:!bg-slate-800" />
@@ -28,13 +32,17 @@ export default function AppLayout() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">
-                      Building Your Application
+                    <BreadcrumbLink asChild>
+                      <Link to={"/"}>Home</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
+                  {pathname !== "/" && (
+                    <BreadcrumbSeparator className="hidden md:block" />
+                  )}
                   <BreadcrumbItem>
-                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                    <BreadcrumbPage className="capitalize">
+                      {pathname.replace("/", "")}
+                    </BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>

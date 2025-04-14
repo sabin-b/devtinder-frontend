@@ -6,6 +6,7 @@ import {
   Frame,
   GalleryVerticalEnd,
   Map,
+  MessageCircleCode,
   PieChart,
   Settings2,
   SquareTerminal,
@@ -17,8 +18,11 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
 import { NavUser } from "./nav_user";
 
 // This is sample data.
@@ -153,9 +157,20 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar className="bg-slate-900" collapsible="icon" {...props}>
+    <Sidebar className="bg-slate-900 pt-2" collapsible="icon" {...props}>
       <SidebarHeader className="bg-slate-900">
-        {/* <TeamSwitcher teams={data.teams} /> */}
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <Link to={"/"}>
+              <div className="flex flex-row items-center justify-start  gap-x-2">
+                <MessageCircleCode className="min-w-8 min-h-8 md:size-8 xl:size-10 text-green-500" />
+                <h4 className="font-medium  select-none truncate  text-white/90  text-2xl">
+                  DevTinder
+                </h4>
+              </div>
+            </Link>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="bg-slate-900">
         {/* <NavMain items={data.navMain} /> */}

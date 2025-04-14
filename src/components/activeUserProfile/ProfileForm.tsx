@@ -1,8 +1,9 @@
-import { getLoggedInUser } from "@/features/user/user.slice";
+import { addUser, getLoggedInUser } from "@/features/user/user.slice";
 import useUpdateProfile from "@/hooks/profile/useUpdateProfile";
 import { cn, makeFileToFilePathUrl } from "@/lib/utils";
 import { UserProfileSchema } from "@/schema/activeUserProfile/profile.schema";
-import { ProfileCardPreview } from "@/types/types";
+import { useAppDispatch } from "@/store/store";
+import { IUser, ProfileCardPreview } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
 import { useEffect } from "react";
@@ -38,6 +39,7 @@ export default function ProfileForm({
 }: IProfileFormProps) {
   // * loggedInUser details from redux store
   const loggedUser = useSelector(getLoggedInUser);
+  const dispatch = useAppDispatch();
 
   const userObject = {
     firstName: loggedUser?.firstName,
@@ -103,7 +105,10 @@ export default function ProfileForm({
 
     //? make update
     updateProfile(formData, {
-      onSuccess: (data: { message: string }) => {
+      onSuccess: (data: { message: string; user: IUser }) => {
+        //? update redux state
+        dispatch(addUser(data.user));
+        //? show success toast
         toast.success(data.message || "profile updated");
       },
       onError: () => {

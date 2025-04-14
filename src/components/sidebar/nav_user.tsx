@@ -33,16 +33,16 @@ export function NavUser() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-slate-700 rounded-md hover:bg-slate-700 data-[state=open]:text-white/90"
+              className="data-[state=open]:bg-slate-700 rounded-md cursor-pointer hover:bg-slate-600 bg-slate-700 data-[state=open]:text-white/90"
             >
               <Avatar className="h-8 w-8 rounded-md">
-                <AvatarImage src={user?.imageUrl} alt={user?.firstName} />
+                <AvatarImage src={user?.image} alt={user?.firstName} />
                 <AvatarFallback className="rounded-md">
                   {user?.firstName.slice(0, 2).toLocaleUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
+                <span className="truncate capitalize font-semibold">
                   {user?.firstName}
                 </span>
                 <span className="truncate text-xs">{user?.emailId}</span>
@@ -59,13 +59,13 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-md">
-                  <AvatarImage src={user?.imageUrl} alt={user?.firstName} />
-                  <AvatarFallback className="rounded-md !bg-slate-500">
+                  <AvatarImage src={user?.image} alt={user?.firstName} />
+                  <AvatarFallback className="rounded-md  !bg-slate-500">
                     {user?.firstName.slice(0, 2).toLocaleUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">
+                  <span className="truncate capitalize font-semibold">
                     {user?.firstName}
                   </span>
                   <span className="truncate text-xs">{user?.emailId}</span>
@@ -83,7 +83,10 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => logOut()}>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => logOut()}
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>
