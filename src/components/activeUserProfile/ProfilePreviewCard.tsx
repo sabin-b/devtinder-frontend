@@ -29,7 +29,7 @@ export default function ProfilePreviewCard({
       : femalePlaceHolder;
 
   return (
-    <Card className="bg-slate-700 min-w-auto w-full xl:min-w-sm max-w-sm mx-auto rounded-md">
+    <Card className="bg-slate-700 min-w-auto w-full xl:min-w-sm max-w-sm  rounded-md">
       <CardHeader className="max-h-[350px] min-h-[250px] md:min-h-[300px] lg:min-h-[300px]  h-full w-full flex">
         <img
           className="object-cover select-none [user-drag:none] [-webkit-user-drag:none] object-center rounded-md w-full h-full"

@@ -1,5 +1,6 @@
 import AuthenticationCheck from "@/middleware/AuthenticationCheck";
 import { Separator } from "@radix-ui/react-separator";
+import { useMemo } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { AppSidebar } from "../sidebar/AppSidebar";
 import {
@@ -15,7 +16,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 export default function AppLayout() {
   const { pathname } = useLocation();
 
-  console.log();
+  const currentPathName = useMemo(() => pathname, [pathname]);
 
   return (
     <AuthenticationCheck>
@@ -30,25 +31,25 @@ export default function AppLayout() {
                 className="mr-2 h-4 w-0.5 bg-slate-600"
               />
               <Breadcrumb>
-                <BreadcrumbList>
+                <BreadcrumbList className="items-center">
                   <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink asChild>
-                      <Link to={"/"}>Home</Link>
+                      {currentPathName !== "/" && <Link to={"/"}>Home</Link>}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  {pathname !== "/" && (
+                  {currentPathName !== "/" && (
                     <BreadcrumbSeparator className="hidden md:block" />
                   )}
                   <BreadcrumbItem>
                     <BreadcrumbPage className="capitalize">
-                      {pathname.replace("/", "")}
+                      {currentPathName.replace("/", "")}
                     </BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
           </header>
-          <main className="flex flex-1 flex-col  gap-4 pt-0">
+          <main className="flex flex-1 flex-col  gap-4 pt-6 md:pt-4 lg:pt-0">
             <Outlet />
           </main>
         </SidebarInset>

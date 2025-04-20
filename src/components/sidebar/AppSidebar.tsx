@@ -164,7 +164,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <Link to={"/"}>
               <div className="flex flex-row items-center justify-start  gap-x-2">
                 <MessageCircleCode className="min-w-8 min-h-8 md:size-8 xl:size-10 text-green-500" />
-                <h4 className="font-medium  select-none truncate  text-white/90  text-2xl">
+                <h4 className="font-medium  select-none truncate  text-white/90  text-2xl ">
                   DevTinder
                 </h4>
               </div>

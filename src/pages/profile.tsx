@@ -16,13 +16,13 @@ export default function Profile() {
     []
   );
   return (
-    <section className="min-svh flex-1 flex flex-col  justify-center">
-      <div className="container max-w-[1200px] md:p-2 rounded-md xl:p-6 ">
-        <div className="grid grid-cols-1  gap-y-6 lg:grid-cols-2 lg:gap-x-6">
+    <section className="min-svh flex-1 flex flex-col justify-center">
+      <div className="container max-w-[1200px] md:p-2 rounded-md ">
+        <div className="grid grid-cols-1  gap-y-6 lg:grid-cols-2 lg:gap-x-8 xl:gap-x-16 ">
           <div>
             <ProfileForm handleProfileCardPreview={handleProfileCardPreview} />
           </div>
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col  justify-center">
             {profileCardPreview && (
               <ProfilePreviewCard {...profileCardPreview} />
             )}
