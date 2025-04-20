@@ -1,17 +1,16 @@
 import { addUser, getLoggedInUser } from "@/features/user/user.slice";
 import useUpdateProfile from "@/hooks/profile/useUpdateProfile";
-import { cn, makeFileToFilePathUrl } from "@/lib/utils";
+import { makeFileToFilePathUrl } from "@/lib/utils";
 import { UserProfileSchema } from "@/schema/activeUserProfile/profile.schema";
 import { useAppDispatch } from "@/store/store";
 import { IUser, ProfileCardPreview } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Button } from "../ui/button";
+import LoaderButton from "../LoaderButton";
 import {
   Form,
   FormControl,
@@ -222,24 +221,13 @@ export default function ProfileForm({
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          className={cn(
-            "w-full cursor-pointer bg-green-600 text-white/90 hover:bg-green-700",
-            {
-              "bg-red-500": isError,
-            }
-          )}
-        >
-          {isLoading && (
-            <span className="inline-flex gap-x-2">
-              <Loader className="size-5 animate-spin" />
-              Please Wait...
-            </span>
-          )}
-          {!isError && !isLoading && <span>Save Changes</span>}
-          {!isLoading && isError && <span>Updation Failed</span>}
-        </Button>
+        <LoaderButton
+          type="profile"
+          btnText="Save Changes"
+          errorText="Updation Failed"
+          isError={isError}
+          isLoading={isLoading}
+        />
       </form>
     </Form>
   );

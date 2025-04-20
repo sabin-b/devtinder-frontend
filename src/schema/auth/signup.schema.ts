@@ -6,6 +6,7 @@ export const signupSchema = z
   .object({
     firstName: z
       .string({ message: "please enter the name" })
+      .nonempty("please enter the name")
       .min(3, { message: "name must be 3 characters long" })
       .regex(
         new RegExp("^[A-Za-z]+([ '-][A-Za-z]+)*$"),
@@ -14,22 +15,25 @@ export const signupSchema = z
       .transform((input) => xss(domPurify.sanitize(input)).trim()),
     emailId: z
       .string({ message: "please enter the email" })
+      .nonempty("please enter the email")
       .email({ message: "please enter the valid email" })
       .transform((input) =>
         xss(domPurify.sanitize(input)).trim().toLowerCase()
       ),
     password: z
       .string({ message: "please enter the password" })
+      .nonempty("please enter the password")
       .min(8, { message: "please enter the password" })
       .regex(
         new RegExp(
           "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$"
         ),
-        "firstName must contain at least one letter, one digit, and one special character (@, $, !, %, , ?, &)."
+        "password must contain at least one letter, one digit, and one special character (@, $, !, %, , ?, &)."
       )
       .transform((input) => xss(domPurify.sanitize(input).trim())),
     confirmPassword: z
-      .string({ message: "please enter the password" })
+      .string({ message: "please enter the  confirm password" })
+      .nonempty("please enter the  confirm password")
       .transform((input) => xss(domPurify.sanitize(input).trim())),
   })
   .refine((value) => (value.password.length > 0 ? true : false), {

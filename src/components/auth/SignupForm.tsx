@@ -1,11 +1,13 @@
+import useSignup from "@/hooks/auth/useSignup";
 import { signupSchema } from "@/schema/auth/signup.schema";
+import { SignUpInputs } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { z } from "zod";
-import { Button } from "../ui/button";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import LoaderButton from "../LoaderButton";
 import {
   Form,
   FormControl,
@@ -17,7 +19,8 @@ import {
 import { Input } from "../ui/input";
 
 export default function SignupForm() {
-  const form = useForm<z.infer<typeof signupSchema>>({
+  // ? react hook form
+  const form = useForm<SignUpInputs>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
       emailId: "",
@@ -31,8 +34,26 @@ export default function SignupForm() {
   //? show password
   const [showPassword, setShowPassword] = useState(false);
 
-  function handleFormValues(data: z.infer<typeof signupSchema>) {
-    console.log(data);
+  //? make request
+  const { failureReason, signUp, isError, isLoading } = useSignup();
+
+  //? react router navigate hook
+  const navigate = useNavigate();
+
+  function handleFormValues(data: SignUpInputs) {
+    signUp(data, {
+      onError: (error) => {
+        toast.error(
+          failureReason?.message || error?.message || "something went wrong"
+        );
+      },
+      onSuccess: ({ message }: { message: string }) => {
+        toast.success(message || "Profile Creation Completed");
+
+        //? successful creation after redirect to login page
+        navigate("/login");
+      },
+    });
   }
 
   return (
@@ -120,9 +141,13 @@ export default function SignupForm() {
             </FormItem>
           )}
         />
-        <Button className="w-full rounded-md" type="submit">
-          Create An Account
-        </Button>
+        <LoaderButton
+          btnText="Create An Account"
+          isError={isError}
+          isLoading={isLoading}
+          type="auth"
+          errorText="Creation Failed"
+        />
         <div className="text-center flex flex-row gap-x-1.5 justify-center text-sm">
           Already have an account?{" "}
           <Link

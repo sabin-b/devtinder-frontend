@@ -1,13 +1,13 @@
 import useLogin from "@/hooks/auth/useLogin";
 import { LoginSchema } from "@/schema/auth/login.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Button } from "../ui/button";
+import LoaderButton from "../LoaderButton";
 import {
   Form,
   FormControl,
@@ -32,7 +32,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   //? login api request
-  const { login, failureReason, isPending } = useLogin();
+  const { login, failureReason, isPending: isLoading, isError } = useLogin();
 
   //? navigate
   const navigate = useNavigate();
@@ -102,18 +102,13 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button className="w-full rounded-md" type="submit">
-          {isPending ? (
-            <React.Fragment>
-              <span className="flex items-center gap-x-2">
-                <Loader className="animate-spin size-4.5" /> Please Wait
-              </span>
-            </React.Fragment>
-          ) : (
-            "Login"
-          )}
-        </Button>
-
+        <LoaderButton
+          type="auth"
+          btnText="Login"
+          isError={isError}
+          isLoading={isLoading}
+          errorText="Login Failed"
+        />
         <div className="text-center flex flex-row gap-x-1.5 justify-center text-sm">
           Don&apos;t have an account?{" "}
           <Link

@@ -1,4 +1,5 @@
 import { UserProfileSchema } from "@/schema/activeUserProfile/profile.schema";
+import { signupSchema } from "@/schema/auth/signup.schema";
 import { z } from "zod";
 
 export enum Gender {
@@ -22,5 +23,14 @@ export interface IUser {
 
 export type ProfileCardPreview = Omit<
   z.infer<typeof UserProfileSchema>,
-  "imageUrl"
+  "image"
 > & { currentImage?: string };
+
+/**
+ * ? types refer from zod schemas
+ *
+ * * login
+ * * signup
+ */
+
+export type SignUpInputs = z.infer<typeof signupSchema>;

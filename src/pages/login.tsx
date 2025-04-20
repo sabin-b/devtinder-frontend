@@ -5,7 +5,7 @@ import { MessageCircleCode } from "lucide-react";
 export default function Login() {
   return (
     <main className="min-h-svh h-full flex  justify-center items-center">
-      <section className=" w-full p-4 sm:p-0 sm:min-w-sm max-w-sm flex flex-col gap-y-6">
+      <section className=" w-full px-4 py-8  sm:px-0 sm:min-w-sm max-w-sm flex flex-col gap-y-6">
         <div className="flex flex-row items-center justify-center gap-x-2">
           <MessageCircleCode className="size-8 md:size-8 xl:size-10 text-green-500" />
           <h4 className="font-medium select-none  text-white/90  text-2xl  xl:text-3xl">
