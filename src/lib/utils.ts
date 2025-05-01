@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -6,8 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function tanstackThrowError(err: unknown) {
-  const { message } = err as unknown as Error;
-  throw new Error(message);
+  const { response } = err as unknown as AxiosError<{ message: string }>;
+  throw new Error(response?.data?.message);
 }
 
 export function makeFileToFilePathUrl(

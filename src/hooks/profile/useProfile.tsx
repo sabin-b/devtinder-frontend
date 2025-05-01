@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { tanstackKeys } from "../tanstack.keys";
 
-export default function useProfile() {
+export default function useUserProfile() {
   const dispatch = useAppDispatch();
   const currentUser = useSelector(getLoggedInUser);
 

@@ -1,7 +1,7 @@
 import { addUser, getLoggedInUser } from "@/features/user/user.slice";
-import useUpdateProfile from "@/hooks/profile/useUpdateProfile";
+import useUpdateUserProfile from "@/hooks/profile/useUpdateUserProfile";
 import { makeFileToFilePathUrl } from "@/lib/utils";
-import { UserProfileSchema } from "@/schema/activeUserProfile/profile.schema";
+import { UserProfileSchema } from "@/schema/UserProfile/profile.schema";
 import { useAppDispatch } from "@/store/store";
 import { IUser, ProfileCardPreview } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,7 +59,7 @@ export default function ProfileForm({
 
   // ? update query
   const { updateProfile, isLoading, isError, failureReason } =
-    useUpdateProfile();
+    useUpdateUserProfile();
 
   //? update userPreview card
   useEffect(() => {

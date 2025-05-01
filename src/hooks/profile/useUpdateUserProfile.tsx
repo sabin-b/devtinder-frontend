@@ -3,7 +3,7 @@ import { tanstackThrowError } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { tanstackKeys } from "../tanstack.keys";
 
-export default function useUpdateProfile() {
+export default function useUpdateUserProfile() {
   const {
     isPending: isLoading,
     isError,

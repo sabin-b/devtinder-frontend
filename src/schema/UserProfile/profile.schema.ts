@@ -73,3 +73,19 @@ export const UserProfileSchema = z.object({
     .optional()
     .transform((input) => (input ? input : undefined)),
 });
+
+export const UpdateUserPasswordSchema = z.object({
+  newPassword: z
+    .string({ message: "please enter the new password" })
+    .nonempty("please enter the new password")
+    .min(8, { message: "password should be 8 characters long" })
+    .regex(
+      new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$"),
+      "password must contain at least one letter, one digit, and one special character (@, $, !, %, , ?, &)."
+    )
+    .transform((input) => xss(domPurify.sanitize(input).trim())),
+  oldPassword: z
+    .string({ message: "please enter the old password" })
+    .nonempty({ message: "old password is required" })
+    .min(1, { message: "please enter the old password" }),
+});

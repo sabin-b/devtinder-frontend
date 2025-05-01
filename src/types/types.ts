@@ -1,4 +1,7 @@
-import { UserProfileSchema } from "@/schema/activeUserProfile/profile.schema";
+import {
+  UpdateUserPasswordSchema,
+  UserProfileSchema,
+} from "@/schema/UserProfile/profile.schema";
 import { signupSchema } from "@/schema/auth/signup.schema";
 import { z } from "zod";
 
@@ -34,3 +37,11 @@ export type ProfileCardPreview = Omit<
  */
 
 export type SignUpInputs = z.infer<typeof signupSchema>;
+
+/**
+ * ? types refer updatePasswordSchema
+ *
+ * * updatePassword
+ */
+
+export type UpdateUserPassword = z.infer<typeof UpdateUserPasswordSchema>;

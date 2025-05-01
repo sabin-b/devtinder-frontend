@@ -28,6 +28,7 @@ export default function useLogin() {
 
         return response.data;
       } catch (error: unknown) {
+        console.log(error);
         tanstackThrowError(error);
       }
     },

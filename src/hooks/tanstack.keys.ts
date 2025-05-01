@@ -4,4 +4,5 @@ export const tanstackKeys = {
   logout: "LOGOUT",
   profileView: "PROFILE/VIEW",
   profileUpdate: "PROFILE/UPDATE",
+  profilePasswordUpdate: "PROFILE/UPDATE_PASSWORD",
 };
