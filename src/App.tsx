@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoadingPage from "./components/LoadingPage";
 import RedirectAuthUser from "./middleware/RedirectAuthUser";
+import Connections from "./pages/connections";
 
 //? pages
 const Home = lazy(() => import("@/pages/home"));
@@ -23,6 +24,14 @@ function App() {
         {
           path: "/profile",
           element: <Profile />,
+        },
+        {
+          path: "/connections",
+          element: <Connections />,
+        },
+        {
+          path: "/requests",
+          element: <div>Requests</div>,
         },
       ],
     },

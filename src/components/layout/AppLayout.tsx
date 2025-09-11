@@ -1,7 +1,7 @@
+import useCurrentPath from "@/hooks/helpers/useCurrentPath";
 import AuthenticationCheck from "@/middleware/AuthenticationCheck";
 import { Separator } from "@radix-ui/react-separator";
-import { useMemo } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { AppSidebar } from "../sidebar/AppSidebar";
 import {
   Breadcrumb,
@@ -14,10 +14,7 @@ import {
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 
 export default function AppLayout() {
-  const { pathname } = useLocation();
-
-  const currentPathName = useMemo(() => pathname, [pathname]);
-
+  const currentPathName = useCurrentPath();
   return (
     <AuthenticationCheck>
       <SidebarProvider>

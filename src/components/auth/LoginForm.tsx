@@ -42,8 +42,8 @@ export default function LoginForm() {
       onSuccess: () => {
         navigate("/");
       },
-      onError: () => {
-        toast.error(failureReason?.message, {
+      onError: (err) => {
+        toast.error(err.message || failureReason?.message, {
           richColors: true,
           position: "top-center",
         });

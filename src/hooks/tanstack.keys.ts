@@ -5,4 +5,5 @@ export const tanstackKeys = {
   profileView: "PROFILE/VIEW",
   profileUpdate: "PROFILE/UPDATE",
   profilePasswordUpdate: "PROFILE/UPDATE_PASSWORD",
+  manageConnections: "MANAGE/CONNECTIONS",
 };

@@ -1,4 +1,4 @@
-import { manageLinks } from "@/data/data";
+import { homeNavLinks } from "@/data/data";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -7,13 +7,13 @@ import {
 } from "../ui/sidebar";
 import SidebarNavLink from "./SideBarNavLink";
 
-export default function NavUser() {
+export default function NavHome() {
   return (
-    <SidebarGroup className="">
-      <SidebarGroupLabel className="text-xs">Manage</SidebarGroupLabel>
+    <SidebarGroup>
+      <SidebarGroupLabel className="text-xs">Explore</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
-          {manageLinks.map((link) => (
+          {homeNavLinks.map((link) => (
             <SidebarNavLink key={link.name} {...link} />
           ))}
         </SidebarMenu>

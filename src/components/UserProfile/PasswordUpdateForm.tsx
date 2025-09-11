@@ -37,8 +37,10 @@ export default function PasswordUpdateForm() {
         //? show success toast
         toast.success(data.message || "password updated");
       },
-      onError: () => {
-        toast.error(failureReason?.message || "password updation failed");
+      onError: (err) => {
+        toast.error(
+          err.message || failureReason?.message || "password updation failed"
+        );
       },
     });
   }

@@ -1,3 +1,5 @@
+import femalePlaceHolder from "@/assets/profile/female_placeholder.jpg";
+import malePlaceHolder from "@/assets/profile/male_placeholder.jpeg";
 import { AxiosError } from "axios";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -29,4 +31,16 @@ export function makeFileToFilePathUrl(
       reject(err);
     };
   });
+}
+
+export function getPlaceHolderImage(gender?: "male" | "female" | "other") {
+  const defaultImage = malePlaceHolder;
+  const image =
+    gender === undefined
+      ? defaultImage
+      : gender === "male" || gender === "other"
+      ? malePlaceHolder
+      : femalePlaceHolder;
+
+  return image;
 }

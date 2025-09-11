@@ -19,7 +19,7 @@ export default function Profile() {
   );
   return (
     <section className="min-svh flex-1 flex flex-col">
-      <div className="container max-w-[1200px] md:p-2 rounded-md ">
+      <div className="container max-w-[1200px] md:p-2 rounded-md">
         <Tabs defaultValue="profile" className="space-y-4">
           <TabsList className="bg-slate-800 h-10">
             <TabsTrigger className="" value="profile">
